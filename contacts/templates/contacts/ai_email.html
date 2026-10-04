@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Follow-up Email - Mini CRM</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 220px;
+            height: 100vh;
+            background: #1f2937;
+            color: white;
+            padding: 25px 15px;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 13px 15px;
+            margin: 8px 0;
+            border-radius: 8px;
+        }
+
+        .sidebar a:hover {
+            background: #374151;
+        }
+
+        /* Main */
+        .main {
+            margin-left: 220px;
+            padding: 35px;
+        }
+
+        .header h1 {
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: #6b7280;
+        }
+
+        /* Email container */
+        .email-container {
+            max-width: 950px;
+            background: white;
+            margin-top: 25px;
+            padding: 30px;
+            border-radius: 14px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        /* Deal information */
+        .info {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .info p {
+            margin: 10px 0;
+        }
+
+        /* Email draft */
+        textarea {
+            width: 100%;
+            min-height: 350px;
+            padding: 15px;
+            border: 1px solid #d1d5db;
+            border-radius: 9px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.6;
+            resize: vertical;
+        }
+
+        .generate-btn {
+            margin-top: 15px;
+            padding: 11px 20px;
+            background: #111827;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .generate-btn:hover {
+            background: #374151;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #374151;
+        }
+
+        @media (max-width: 700px) {
+            .sidebar {
+                width: 170px;
+            }
+
+            .main {
+                margin-left: 170px;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+    <h2>Mini CRM</h2>
+
+    <a href="{% url 'contact_list' %}">
+        📇 Contacts
+    </a>
+
+    <a href="{% url 'deal_list' %}">
+        💼 Deal Pipeline
+    </a>
+
+    <a href="{% url 'contact_create' %}">
+        ➕ Add Contact
+    </a>
+
+</div>
+
+
+<!-- MAIN -->
+
+<div class="main">
+
+    <div class="header">
+        <h1>🤖 AI Follow-up Email</h1>
+        <p>Create a professional follow-up email for your deal.</p>
+    </div>
+
+
+    <div class="email-container">
+
+        <!-- Deal Information -->
+
+        <div class="info">
+
+            <p>
+                <strong>Deal:</strong>
+                {{ deal.title }}
+            </p>
+
+            <p>
+                <strong>Contact:</strong>
+                {{ deal.contact.name }}
+            </p>
+
+            <p>
+                <strong>Stage:</strong>
+                {{ deal.stage }}
+            </p>
+
+            <p>
+                <strong>Notes:</strong>
+                {{ deal.contact.notes }}
+            </p>
+
+        </div>
+
+
+        <!-- Email -->
+
+        <h2>Email Draft</h2>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <textarea
+                name="email"
+                placeholder="Click Generate Email to create a follow-up email..."
+            >{{ email }}</textarea>
+
+            <br>
+
+            <button class="generate-btn" type="submit">
+                🤖 Generate Email
+            </button>
+
+        </form>
+
+
+        <a class="back" href="{% url 'deal_list' %}">
+            ← Back to Deal Pipeline
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

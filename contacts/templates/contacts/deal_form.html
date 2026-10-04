@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% if deal %}Edit Deal{% else %}Add Deal{% endif %}</title>
+</head>
+<body>
+
+    <h1>
+        {% if deal %}
+            Edit Deal
+        {% else %}
+            Add New Deal
+        {% endif %}
+    </h1>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label>Deal Title:</label>
+        <input type="text" name="title"
+               value="{{ deal.title|default:'' }}" required>
+
+        <br><br>
+
+        <label>Contact:</label>
+        <select name="contact" required>
+            {% for contact in contacts %}
+                <option value="{{ contact.id }}"
+                    {% if deal and deal.contact.id == contact.id %}selected{% endif %}>
+                    {{ contact.name }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <br><br>
+
+        <label>Stage:</label>
+        <select name="stage">
+
+            <option value="New"
+                {% if deal and deal.stage == "New" %}selected{% endif %}>
+                New
+            </option>
+
+            <option value="Contacted"
+                {% if deal and deal.stage == "Contacted" %}selected{% endif %}>
+                Contacted
+            </option>
+
+            <option value="Qualified"
+                {% if deal and deal.stage == "Qualified" %}selected{% endif %}>
+                Qualified
+            </option>
+
+            <option value="Won"
+                {% if deal and deal.stage == "Won" %}selected{% endif %}>
+                Won
+            </option>
+
+            <option value="Lost"
+                {% if deal and deal.stage == "Lost" %}selected{% endif %}>
+                Lost
+            </option>
+
+        </select>
+
+        <br><br>
+
+        <button type="submit">
+            {% if deal %}Update Deal{% else %}Save Deal{% endif %}
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="{% url 'deal_list' %}">Back to Deal Pipeline</a>
+
+</body>
+</html>

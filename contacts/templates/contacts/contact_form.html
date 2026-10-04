@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% if form.instance.pk %}Edit Contact{% else %}Add Contact{% endif %}</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 230px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: #1e293b;
+            color: white;
+            padding: 25px 18px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 35px;
+        }
+
+        .menu a {
+            display: block;
+            color: #cbd5e1;
+            text-decoration: none;
+            padding: 13px 15px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+        }
+
+        .menu a:hover {
+            background: #334155;
+            color: white;
+        }
+
+        /* Main */
+        .main {
+            margin-left: 230px;
+            padding: 35px;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .topbar h1 {
+            margin: 0;
+            font-size: 30px;
+            color: #1e293b;
+        }
+
+        .subtitle {
+            color: #64748b;
+            margin-top: 8px;
+        }
+
+        /* Form Card */
+        .form-card {
+            max-width: 750px;
+            background: white;
+            padding: 30px;
+            border-radius: 14px;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-card h2 {
+            margin-top: 0;
+            color: #1e293b;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            color: #334155;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #2563eb;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .save-btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .save-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .back-btn {
+            background: #e2e8f0;
+            color: #334155;
+            text-decoration: none;
+            padding: 12px 22px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .back-btn:hover {
+            background: #cbd5e1;
+        }
+
+        .errorlist {
+            color: #dc2626;
+            padding-left: 20px;
+        }
+
+        /* Logout */
+        .logout {
+            margin-top: 30px;
+        }
+
+        .logout button {
+            width: 100%;
+            padding: 11px;
+            border: none;
+            border-radius: 8px;
+            background: #ef4444;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .logout button:hover {
+            background: #dc2626;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+
+        <div class="logo">
+            📊 Mini CRM
+        </div>
+
+        <div class="menu">
+            <a href="{% url 'contact_list' %}">👥 Contacts</a>
+
+            <a href="{% url 'deal_list' %}">💼 Deal Pipeline</a>
+
+            <a href="{% url 'contact_create' %}">➕ Add Contact</a>
+        </div>
+
+        <div class="logout">
+            <form method="POST" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
+        </div>
+
+    </div>
+
+
+    <!-- Main Content -->
+    <div class="main">
+
+        <div class="topbar">
+
+            <div>
+                <h1>
+                    {% if form.instance.pk %}
+                        ✏️ Edit Contact
+                    {% else %}
+                        ➕ Add New Contact
+                    {% endif %}
+                </h1>
+
+                <div class="subtitle">
+                    {% if form.instance.pk %}
+                        Update contact information
+                    {% else %}
+                        Add a new contact to your CRM
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- Form -->
+        <div class="form-card">
+
+            <h2>Contact Information</h2>
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                {{ form.as_p }}
+
+                <div class="buttons">
+
+                    <button type="submit" class="save-btn">
+                        {% if form.instance.pk %}
+                            💾 Update Contact
+                        {% else %}
+                            💾 Save Contact
+                        {% endif %}
+                    </button>
+
+                    <a href="{% url 'contact_list' %}" class="back-btn">
+                        ← Back to Contacts
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
